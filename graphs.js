@@ -33,13 +33,13 @@
     // console.log(data)
 
     const data = [
-      { year: 2010, count: 10, count2 :15 },
-      { year: 2011, count: 20, count2 :3 },
-      { year: 2012, count: 15, count2 :8 },
-      { year: 2013, count: 25, count2 :19 },
-      { year: 2014, count: 22, count2 :16 },
-      { year: 2015, count: 30, count2 :11 },
-      { year: 2016, count: 28, count2 :5 },
+      { year: 2010, count: 10, count2 :15 , 15: 1 },
+      { year: 2011, count: 20, count2 :3, 15: 1},
+      { year: 2012, count: 15, count2 :8, 15: 1},
+      { year: 2013, count: 25, count2 :19, 15: 1},
+      { year: 2014, count: 22, count2 :16, 15: 1},
+      { year: 2015, count: 30, count2 :11, 15: 1},
+      { year: 2016, count: 28, count2 :5 ,15: 1 },
     ];
   
     new Chart(
@@ -55,10 +55,8 @@
             },
             {
                 label: 'Acquisitions by year',
-                data: data.map(row => row.count)
-            }
-            
-
+                data: data.map(row => row[15])
+            },
           ]
         }
       }
