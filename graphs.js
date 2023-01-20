@@ -1,5 +1,3 @@
-
-
 (async function() {
 
     // location where to place the graph1
@@ -11,53 +9,47 @@
     
     //pull the data out of the table and insert in array of objects
     listItems= Array.from(table1.getElementsByTagName('td'))
+    yearItems= Array.from(table1.getElementsByTagName('th'))
     const dataTable = listItems.map(ele => ele.innerHTML)
 
-    //const data = []
-    // for(let i=0; i<=34; i++){   
-    //     data.push({
-    //         country: dataTable[i*12], 
-    //         2002: dataTable[1+i*12],
-    //         2003: dataTable[2+i*12], 
-    //         2004: dataTable[3+i*12], 
-    //         2005: dataTable[4+i*12],
-    //         2006: dataTable[5+i*12],
-    //         2007: dataTable[6+i*12],
-    //         2008: dataTable[7+i*12],
-    //         2009: dataTable[8+i*12],
-    //         2010: dataTable[9+i*12],
-    //         2011: dataTable[10+i*12],
-    //         2012: dataTable[11+i*12]
-    //     })    
-    // }  
-    // console.log(data)
 
-    const data = [
-      { year: 2010, count: 10, count2 :15 , 15: 1 },
-      { year: 2011, count: 20, count2 :3, 15: 1},
-      { year: 2012, count: 15, count2 :8, 15: 1},
-      { year: 2013, count: 25, count2 :19, 15: 1},
-      { year: 2014, count: 22, count2 :16, 15: 1},
-      { year: 2015, count: 30, count2 :11, 15: 1},
-      { year: 2016, count: 28, count2 :5 ,15: 1 },
-    ];
-  
+    const table = []
+    for(let i=0; i<=34; i++){   
+        table.push(
+            [
+                parseFloat(dataTable[1+i*12].replace(",",".")), 
+                parseFloat(dataTable[2+i*12].replace(",",".")), 
+                parseFloat(dataTable[3+i*12].replace(",",".")), 
+                parseFloat(dataTable[4+i*12].replace(",",".")), 
+                parseFloat(dataTable[5+i*12].replace(",",".")), 
+                parseFloat(dataTable[6+i*12].replace(",",".")), 
+                parseFloat(dataTable[7+i*12].replace(",",".")), 
+                parseFloat(dataTable[8+i*12].replace(",",".")), 
+                parseFloat(dataTable[9+i*12].replace(",",".")), 
+                parseFloat(dataTable[10+i*12].replace(",",".")), 
+                parseFloat(dataTable[11+i*12].replace(",",".")),  
+            ]
+        )    
+    }  
+
+    const country = [...Array(35)].map((ele,i) => ele = dataTable[i*12])
+    console.log(country)
+
+    const years = [...Array(11)].map((ele,i) => ele=2002+i)
+    console.log(years)
+
+    let datasets = [] 
+    for(let i=0; i< country.length; i++){
+       datasets.push( {label: country[i], data: table[i]})
+    }
+ 
     new Chart(
       document.getElementById('chart1'),
       {
-        type: 'bar',
+        type: 'line',
         data: {
-          labels: data.map(row => row.year),
-          datasets: [
-            {
-                label: 'Acquisitions by year',
-                data: data.map(row => row.count)
-            },
-            {
-                label: 'Acquisitions by year',
-                data: data.map(row => row[15])
-            },
-          ]
+          labels: years.map(ele => ele),
+          datasets: datasets
         }
       }
     );
