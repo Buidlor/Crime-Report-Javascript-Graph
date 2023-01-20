@@ -8,35 +8,21 @@
     parent1.insertBefore(chartDiv1, table1 )
     
     //pull the data out of the table and insert in array of objects
-    listItems= Array.from(table1.getElementsByTagName('td'))
-    yearItems= Array.from(table1.getElementsByTagName('th'))
+    const listItems= Array.from(table1.getElementsByTagName('td'))
     const dataTable = listItems.map(ele => ele.innerHTML)
 
+    //take out years and countries
+    const country = [...Array(35)].map((ele,i) => ele = dataTable[i*12])
+    const years = [...Array(11)].map((ele,i) => ele=2002+i)
 
     const table = []
     for(let i=0; i<=34; i++){   
-        table.push(
-            [
-                parseFloat(dataTable[1+i*12].replace(",",".")), 
-                parseFloat(dataTable[2+i*12].replace(",",".")), 
-                parseFloat(dataTable[3+i*12].replace(",",".")), 
-                parseFloat(dataTable[4+i*12].replace(",",".")), 
-                parseFloat(dataTable[5+i*12].replace(",",".")), 
-                parseFloat(dataTable[6+i*12].replace(",",".")), 
-                parseFloat(dataTable[7+i*12].replace(",",".")), 
-                parseFloat(dataTable[8+i*12].replace(",",".")), 
-                parseFloat(dataTable[9+i*12].replace(",",".")), 
-                parseFloat(dataTable[10+i*12].replace(",",".")), 
-                parseFloat(dataTable[11+i*12].replace(",",".")),  
-            ]
-        )    
+      let row =[]
+      for( let j=1; j <=11; j++){
+        row.push(parseFloat(dataTable[j+i*12].replace(",",".")))
+      }
+      table.push(row)    
     }  
-
-    const country = [...Array(35)].map((ele,i) => ele = dataTable[i*12])
-    console.log(country)
-
-    const years = [...Array(11)].map((ele,i) => ele=2002+i)
-    console.log(years)
 
     let datasets = [] 
     for(let i=0; i< country.length; i++){
@@ -48,7 +34,7 @@
       {
         type: 'line',
         data: {
-          labels: years.map(ele => ele),
+          labels: years,
           datasets: datasets
         }
       }
