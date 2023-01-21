@@ -1,8 +1,7 @@
-
+import axios from 'axios'
 (
-  
   async function() {
-   
+    
     // locate where to place graph1
     const table1 = document.getElementById("table1")
     const parent1 = table1.parentNode
@@ -97,10 +96,65 @@
     
     //fetch data with axios:
     
-    console.log("here is a test")
     
-
+    let myChart
+    const datapoints =[]
+    
+      axios.get('https://canvasjs.com/services/data/datapoints.php?xstart=1&ystart=10&length=10&type=json')
+      .then( (response) => {
+        if(myChart) myChart.destroy()
+        response.data.forEach(ele => datapoints.push({x:ele[0], y:ele[1]}))               
+         myChart = new Chart(
+          document.getElementById('remoteData'),
+          {
+            type: 'line',
+            data: {
+              labels: datapoints.map(ele => ele.x),
+              datasets: [
+                {
+                  label:"one",
+                  data: datapoints.map(ele => ele.y)
+                }
+              ]
+            }
+          }
+        );
+        myChart.render()
+        updateChart();
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      
    
-  })
-  
+    const updateChart = () => {
+      axios.get("https://canvasjs.com/services/data/datapoints.php?xstart="+(datapoints.length+1)+ "&ystart=" + (datapoints[datapoints.length - 1].y) + "&length=1&type=json")
+        .then((response) => {
+          if(myChart) myChart.destroy()
+          response.data.forEach( ele => datapoints.push({x: ele[0], y:ele[1]})) 
+          console.log("datapoints should be updated: ", datapoints)
+
+          myChart=new Chart(
+            document.getElementById('remoteData'),
+            {
+              type: 'line',
+              data: {
+                labels: datapoints.map(ele => ele.x),
+                datasets: [
+                  {
+                    label:"one",
+                    data: datapoints.map(ele => ele.y)
+                  }
+                ]
+              }
+            }
+          );
+          setTimeout(updateChart, 1000);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    }
+   
+  }) 
 ();
